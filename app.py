@@ -6,7 +6,7 @@ import joblib
 st.title('First Data Model')
 
 # Cargar modelo previamente entrenado
-modelo = joblib.load("modelo.pkl")
+modelo = joblib.load("final_model.pkl")
 
 # Crear inputs para cada atributo
 longitude = st.number_input("Longitude", value=0.0)
