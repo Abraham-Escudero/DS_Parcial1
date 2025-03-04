@@ -6,6 +6,7 @@ import joblib
 st.title('First Data Model')
 
 # Cargar modelo previamente entrenado
+full_pipeline = joblib.load("full_pipeline.pkl")
 modelo = joblib.load("final_model.pkl")
 
 # Crear inputs para cada atributo
@@ -17,7 +18,7 @@ total_bedrooms = st.number_input("Total Bedrooms", value=0)
 population = st.number_input("Population", value=0)
 households = st.number_input("Households", value=0)
 median_income = st.number_input("Median Income", value=0.0)
-ocean_proximity = st.selectbox("Ocean Proximity", options=[0, 1, 2, 3, 4])
+ocean_proximity = st.selectbox("Proximidad al Océano", ["NEAR BAY", "INLAND", "NEAR OCEAN", "<1H OCEAN", "ISLAND"])
 
 # Crear DataFrame con los valores ingresados
 data = pd.DataFrame({
@@ -32,8 +33,11 @@ data = pd.DataFrame({
     "ocean_proximity": [ocean_proximity]
 })
 
-# Botón para realizar predicción
+# Botón para predecir
 if st.button("Predecir"):
-    prediccion = modelo.predict(data)
+    # Aplicar el pipeline para transformar los datos
+    data_prepared = full_pipeline.transform(data)
+
+    prediccion = modelo.predict(data_prepared)
     st.write("### Predicción del Modelo")
     st.write(prediccion[0])
